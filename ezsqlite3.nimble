@@ -1,11 +1,11 @@
 # Package
 
-version       = "0.1.1"
+version       = "0.1.2"
 author        = "CodeHz"
 description   = "Sqlite3 bindings for ElementZero project"
 license       = "LGPL-3.0"
 srcDir        = "."
-installDirs   = @["dist"]
+installExt    = @["nim", "dll"]
 
 
 # Dependencies

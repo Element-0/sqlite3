@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set DISTFILE=dist/sqlite3.dll
+set DISTFILE=sqlite3.dll
 if exist %DISTFILE% (
   echo skipped
   exit
