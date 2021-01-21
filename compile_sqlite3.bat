@@ -6,7 +6,7 @@ if exist %DISTFILE% (
   exit
 )
 clang-cl ^
-  -m64 -MD -O2 -Qvec -Wno-deprecated-declarations ^
+  -m64 -MD -O1 -Qvec -Wno-deprecated-declarations ^
   -DSQLITE_API=__declspec(dllexport) ^
   -DSQLITE_DQS=0 ^
   -DSQLITE_THREADSAFE=0 ^
