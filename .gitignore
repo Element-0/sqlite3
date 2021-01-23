@@ -6,3 +6,5 @@ nimcache
 *.lib
 *.pdb
 *.exp
+*.obj
+*.ilk
