@@ -124,12 +124,19 @@ proc genQueryProcedure(sql: string, body, tupdef: NimNode, opt: static bool): Ni
     procbody.addTree(nnkIfStmt, ifbody):
       ifbody.addTree(nnkElifBranch, branch):
         branch.add nnkCall.newTree(nnkDotExpr.newTree(st_ident, bindSym "step"))
-        branch.addTree(nnkReturnStmt, retbody):
-          let tmp = fillPar(rettype, st_ident)
-          when opt:
-            retbody.add nnkCommand.newTree(bindSym "some", tmp)
-          else:
-            retbody.add tmp
+        branch.addTree(nnkStmtList, resultstmt):
+          resultstmt.addTree(nnkIfStmt, ifbody2):
+            ifbody2.addTree(nnkElifBranch, dup_branch):
+              dup_branch.add nnkCall.newTree(nnkDotExpr.newTree(st_ident, bindSym "step"))
+              dup_branch.add nnkRaiseStmt.newTree(
+                nnkCall.newTree(bindSym "newException", ident "SQLiteError", newLit "Too many results")
+              )
+          resultstmt.addTree(nnkReturnStmt, retbody):
+            let tmp = fillPar(rettype, st_ident)
+            when opt:
+              retbody.add nnkCommand.newTree(bindSym "some", tmp)
+            else:
+              retbody.add tmp
       ifbody.addTree(nnkElse, elsebody):
         when opt:
           elsebody.add nnkReturnStmt.newTree(
@@ -137,7 +144,7 @@ proc genQueryProcedure(sql: string, body, tupdef: NimNode, opt: static bool): Ni
           )
         else:
           elsebody.add nnkRaiseStmt.newTree(
-            nnkCall.newTree(bindSym "newException", ident "SQLiteError", newLit "Element not found")
+            nnkCall.newTree(bindSym "newException", ident "SQLiteError", newLit "No results")
           )
 proc genUpdateProcedure(sql: string, body: NimNode): NimNode =
   result = body.copy()
