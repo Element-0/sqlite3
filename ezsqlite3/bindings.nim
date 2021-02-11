@@ -221,7 +221,7 @@ proc `[]=`*(st: var Statement, idx: int, val: type(nil)) {.genref.} =
   st.raw.check_sqlite_stmt sqlite3_bind_null(st.raw, idx)
 
 proc `[]=`*(st: var Statement, idx: int, val: string) {.genref.} =
-  st.raw.check_sqlite_stmt sqlite3_bind_text64(st.raw, idx, val, val.len, TransientDestructor, enc_utf8)
+  st.raw.check_sqlite_stmt sqlite3_bind_text64(st.raw, idx, val, val.len + 1, TransientDestructor, enc_utf8)
 
 proc reset*(st: var Statement) {.genref.} =
   st.raw.check_sqlite_stmt sqlite3_reset(st.raw)
