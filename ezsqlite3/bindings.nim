@@ -127,7 +127,7 @@ proc sqlite3_bind_blob64*(st: ptr RawStatement, idx: int, buffer: pointer, len: 
 proc sqlite3_bind_double*(st: ptr RawStatement, idx: int, value: float64): ResultCode {.importc.}
 proc sqlite3_bind_int64*(st: ptr RawStatement, idx: int, val: int64): ResultCode {.importc.}
 proc sqlite3_bind_null*(st: ptr RawStatement, idx: int): ResultCode {.importc.}
-proc sqlite3_bind_text64*(st: ptr RawStatement, idx: int, val: cstring, len: int, free: SqliteDestroctor, encoding: DatabaseEncoding): ResultCode {.importc.}
+proc sqlite3_bind_text*(st: ptr RawStatement, idx: int, val: cstring, len: int32, free: SqliteDestroctor): ResultCode {.importc.}
 proc sqlite3_bind_value*(st: ptr RawStatement, idx: int, val: ptr RawValue): ResultCode {.importc.}
 proc sqlite3_bind_pointer*(st: ptr RawStatement, idx: int, val: pointer, name: cstring, free: SqliteDestroctor): ResultCode {.importc.}
 proc sqlite3_bind_zeroblob64*(st: ptr RawStatement, idx: int, len: int): ResultCode {.importc.}
@@ -221,7 +221,7 @@ proc `[]=`*(st: var Statement, idx: int, val: type(nil)) {.genref.} =
   st.raw.check_sqlite_stmt sqlite3_bind_null(st.raw, idx)
 
 proc `[]=`*(st: var Statement, idx: int, val: string) {.genref.} =
-  st.raw.check_sqlite_stmt sqlite3_bind_text64(st.raw, idx, val, val.len + 1, TransientDestructor, enc_utf8)
+  st.raw.check_sqlite_stmt sqlite3_bind_text(st.raw, idx, val, int32 val.len, TransientDestructor)
 
 proc reset*(st: var Statement) {.genref.} =
   st.raw.check_sqlite_stmt sqlite3_reset(st.raw)
