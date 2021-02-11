@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.3"
+version       = "0.1.4"
 author        = "CodeHz"
 description   = "Sqlite3 bindings for ElementZero project"
 license       = "LGPL-3.0"
