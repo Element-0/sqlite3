@@ -112,6 +112,7 @@ type SqliteDateType* = enum
   dt_null = 5
 
 {.push dynlib: sqlite3dll.}
+proc sqlite3_auto_extension*(entry: pointer): ResultCode {.importc.}
 proc sqlite3_errmsg*(db: ptr RawDatabase): cstring {.importc.}
 proc sqlite3_errstr*(code: ResultCode): cstring {.importc.}
 proc sqlite3_db_handle*(st: ptr RawStatement): ptr RawDatabase {.importc.}
