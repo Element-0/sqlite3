@@ -116,7 +116,10 @@ proc genQueryProcedure(sql: string, body, tupdef: NimNode, opt: static bool): Ni
   result = body.copy()
   let db_ident = genSym(nskParam, "db")
   let st_ident = genSym(nskVar, "st")
-  let rettype = result[3][0]
+  let rettype = when opt:
+    result[3][0][1]
+  else:
+    result[3][0]
   injectDbDecl(result, db_ident)
   result[6] = nnkStmtList.genTree(procbody):
     injectDbFetch(procbody, sql, db_ident, st_ident)
